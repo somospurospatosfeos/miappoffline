@@ -1,19 +1,22 @@
 name: Build APK
+
 on:
   push:
   workflow_dispatch:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
-    steps:
-      - uses: actions/checkout@v4
+    runs-on: ubuntu-latest
 
-      - name: Build with Buildozer
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build APK with Buildozer
         uses: ArtemSBulgakov/buildozer-action@v1
         with:
           command: buildozer android debug
-          buildozer_version: master
+          buildozer_version: stable
           workdir: .
 
       - name: Upload APK
@@ -21,3 +24,4 @@ jobs:
         with:
           name: apk
           path: bin/*.apk
+          if-no-files-found: error
